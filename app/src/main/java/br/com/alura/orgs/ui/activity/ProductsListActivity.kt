@@ -7,12 +7,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import br.com.alura.orgs.R
 import br.com.alura.orgs.dao.ProductDao
-import br.com.alura.orgs.model.Produto
 import br.com.alura.orgs.ui.recycleview.adapter.ListaProdutosAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import java.math.BigDecimal
 
-class MainActivity : AppCompatActivity(R.layout.activity_main) {
+class ProductListActivity : AppCompatActivity(R.layout.activity_main) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
