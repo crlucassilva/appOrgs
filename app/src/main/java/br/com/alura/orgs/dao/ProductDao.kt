@@ -1,18 +1,18 @@
 package br.com.alura.orgs.dao
 
-import br.com.alura.orgs.model.Produto
+import br.com.alura.orgs.model.Product
 
 class ProductDao {
 
     companion object {
-        private val produtos = mutableListOf<Produto>()
+        private val products = mutableListOf<Product>()
     }
 
-    fun add(produto: Produto) {
-        produtos.add(produto)
+    fun add(product: Product) {
+        products.add(product)
     }
 
-    fun findAll() : List<Produto> {
-        return produtos.toList()
+    fun findAll() : List<Product> {
+        return products.toList()
     }
 }
