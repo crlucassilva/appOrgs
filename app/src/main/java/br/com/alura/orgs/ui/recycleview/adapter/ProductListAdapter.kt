@@ -2,11 +2,9 @@ package br.com.alura.orgs.ui.recycleview.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import br.com.alura.orgs.R
+import br.com.alura.orgs.databinding.ProductItemBinding
 import br.com.alura.orgs.model.Product
 
 class ProductListAdapter(
@@ -16,21 +14,22 @@ class ProductListAdapter(
 
     private val products = products.toMutableList()
 
-    class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
+    class ViewHolder(binding: ProductItemBinding): RecyclerView.ViewHolder(binding.root) {
+
+        private val name = binding.productItemName
+        private val description = binding.productItemDescription
+        private val value = binding.productItemValue
+
         fun vincula(product: Product) {
-            val name = itemView.findViewById<TextView>(R.id.product_item_name)
             name.text = product.name
-            val description = itemView.findViewById<TextView>(R.id.product_item_description)
             description.text = product.description
-            val value = itemView.findViewById<TextView>(R.id.product_item_value)
             value.text = product.value.toPlainString()
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val inflater = LayoutInflater.from(context)
-        val view = inflater.inflate(R.layout.product_item, parent, false)
-        return ViewHolder(view)
+        val binding = ProductItemBinding.inflate(LayoutInflater.from(context), parent, false)
+        return ViewHolder(binding)
     }
 
     override fun getItemCount(): Int = products.size
