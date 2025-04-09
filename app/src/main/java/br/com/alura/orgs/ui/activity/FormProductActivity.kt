@@ -2,7 +2,9 @@ package br.com.alura.orgs.ui.activity
 
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import br.com.alura.orgs.R
 import br.com.alura.orgs.dao.ProductDao
 import br.com.alura.orgs.databinding.ActivityFormProductBinding
 import br.com.alura.orgs.model.Product
@@ -19,6 +21,21 @@ class FormProductActivity :
         super.onCreate(savedInstanceState)
         configSaveButton()
         setContentView(binding.root)
+        configDialog()
+    }
+
+    private fun configDialog() {
+        binding.activityFormProductImageView.setOnClickListener {
+            AlertDialog.Builder(this)
+                .setView(R.layout.image_form)
+                .setPositiveButton("Confirmar") { _, _ ->
+
+                }
+                .setNegativeButton("Cancelar") { _, _ ->
+
+                }
+                .show()
+        }
     }
 
     private fun configSaveButton() {
