@@ -17,9 +17,9 @@ class ProductsListActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(binding.root)
         configRecycleView()
         configFab()
-        setContentView(binding.root)
     }
 
     override fun onResume() {
@@ -28,7 +28,8 @@ class ProductsListActivity : AppCompatActivity() {
     }
 
     private fun configFab() {
-        binding.activityProductListFloatingActionButton.setOnClickListener {
+        val fab = binding.activityProductListFloatingActionButton
+        fab.setOnClickListener {
             goToFormProduct()
         }
     }
