@@ -7,15 +7,22 @@ import androidx.appcompat.app.AppCompatActivity
 import br.com.alura.orgs.R
 import br.com.alura.orgs.dao.ProductDao
 import br.com.alura.orgs.databinding.ActivityFormProductBinding
+import br.com.alura.orgs.databinding.ImageFormBinding
+import br.com.alura.orgs.extensions.loadImage
 import br.com.alura.orgs.model.Product
+import br.com.alura.orgs.ui.dialog.DialogImageForm
+import coil3.load
+import coil3.request.placeholder
 import java.math.BigDecimal
 
 class FormProductActivity :
     AppCompatActivity() {
 
-        private val binding by lazy {
-            ActivityFormProductBinding.inflate(layoutInflater)
-        }
+    private val binding by lazy {
+        ActivityFormProductBinding.inflate(layoutInflater)
+    }
+
+    private var url: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,16 +32,12 @@ class FormProductActivity :
     }
 
     private fun configDialog() {
+
         binding.activityFormProductImageView.setOnClickListener {
-            AlertDialog.Builder(this)
-                .setView(R.layout.image_form)
-                .setPositiveButton("Confirmar") { _, _ ->
-
-                }
-                .setNegativeButton("Cancelar") { _, _ ->
-
-                }
-                .show()
+            DialogImageForm(this).show(url) { image ->
+                url = image
+                binding.activityFormProductImageView.loadImage(url)
+            }
         }
     }
 
@@ -65,7 +68,8 @@ class FormProductActivity :
         return Product(
             name = name,
             description = description,
-            value = value
+            value = value,
+            image = url
         )
     }
 }

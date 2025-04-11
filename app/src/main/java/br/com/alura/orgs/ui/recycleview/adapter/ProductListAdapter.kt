@@ -2,9 +2,11 @@ package br.com.alura.orgs.ui.recycleview.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import br.com.alura.orgs.databinding.ProductItemBinding
+import br.com.alura.orgs.extensions.loadImage
 import br.com.alura.orgs.model.Product
 import java.math.BigDecimal
 import java.text.NumberFormat
@@ -17,17 +19,26 @@ class ProductListAdapter(
 
     private val products = products.toMutableList()
 
-    class ViewHolder(binding: ProductItemBinding): RecyclerView.ViewHolder(binding.root) {
-
-        private val name = binding.productItemName
-        private val description = binding.productItemDescription
-        private val value = binding.productItemValue
+    class ViewHolder(private val binding: ProductItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         fun vincula(product: Product) {
+            val name = binding.productItemName
             name.text = product.name
+            val description = binding.productItemDescription
             description.text = product.description
+            val value = binding.productItemValue
             val currencyValue = formaterCurrencyBrazil(product.value)
             value.text = currencyValue
+
+            val visibility = if (product.image != null) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+
+            binding.productItemImageView.visibility = visibility
+            binding.productItemImageView.loadImage(product.image)
         }
 
         private fun formaterCurrencyBrazil(value: BigDecimal): String {

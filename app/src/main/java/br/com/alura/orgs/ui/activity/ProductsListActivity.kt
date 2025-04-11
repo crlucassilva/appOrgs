@@ -2,10 +2,7 @@ package br.com.alura.orgs.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.material3.AlertDialog
-import br.com.alura.orgs.R
 import br.com.alura.orgs.dao.ProductDao
 import br.com.alura.orgs.databinding.ActivityProductsListBinding
 import br.com.alura.orgs.ui.recycleview.adapter.ProductListAdapter
