@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycleView"
+        android:id="@+id/activity_products_list_recycleView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:contentDescription="@string/recycler_view_description"
@@ -21,12 +21,16 @@
         android:id="@+id/activity_product_list_floatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:clickable="true"
         android:layout_margin="16dp"
+        android:layout_marginEnd="56dp"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
         android:contentDescription="@string/new_product"
-        android:text="@string/new_product"
-        app:icon="@drawable/ic_action_add"
         android:focusable="true"
+        android:text="@string/new_product"
+        android:textColor="@color/white"
+        app:iconTint="@color/white"
+        app:icon="@drawable/ic_action_add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

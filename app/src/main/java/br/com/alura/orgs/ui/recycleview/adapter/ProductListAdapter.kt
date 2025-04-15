@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import br.com.alura.orgs.databinding.ProductItemBinding
+import br.com.alura.orgs.extensions.formaterCurrencyBrazil
 import br.com.alura.orgs.extensions.loadImage
 import br.com.alura.orgs.model.Product
 import java.math.BigDecimal
@@ -14,21 +15,33 @@ import java.util.Locale
 
 class ProductListAdapter(
     private val context: Context,
-    products: List<Product>
+    products: List<Product>,
+    var whenClickOnTheListener: (product: Product) -> Unit = {}
 ) : RecyclerView.Adapter<ProductListAdapter.ViewHolder>() {
 
     private val products = products.toMutableList()
 
-    class ViewHolder(private val binding: ProductItemBinding) :
+    inner class ViewHolder(private val binding: ProductItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
+        private lateinit var product: Product
+
+        init {
+            binding.root.setOnClickListener {
+                if (::product.isInitialized) {
+                    whenClickOnTheListener(product)
+                }
+            }
+        }
+
         fun vincula(product: Product) {
+            this.product = product
             val name = binding.productItemName
             name.text = product.name
             val description = binding.productItemDescription
             description.text = product.description
             val value = binding.productItemValue
-            val currencyValue = formaterCurrencyBrazil(product.value)
+            val currencyValue = product.value.formaterCurrencyBrazil()
             value.text = currencyValue
 
             val visibility = if (product.image != null) {
@@ -39,12 +52,6 @@ class ProductListAdapter(
 
             binding.productItemImageView.visibility = visibility
             binding.productItemImageView.loadImage(product.image)
-        }
-
-        private fun formaterCurrencyBrazil(value: BigDecimal): String {
-            val formaterNumber: NumberFormat = NumberFormat.getCurrencyInstance(Locale("pt", "br"))
-            val currencyValue = formaterNumber.format(value)
-            return currencyValue
         }
     }
 

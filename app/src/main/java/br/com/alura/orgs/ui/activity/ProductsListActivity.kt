@@ -40,7 +40,16 @@ class ProductsListActivity : AppCompatActivity() {
     }
 
     private fun configRecycleView() {
-        val recycleView = binding.recycleView
+        val recycleView = binding.activityProductsListRecycleView
         recycleView.adapter = adapter
+        adapter.whenClickOnTheListener = {
+            val intent = Intent(
+                this,
+                ProductDetailsActivity::class.java
+            ).apply {
+                putExtra(CHAVE_PRODUTO, it)
+            }
+            startActivity(intent)
+        }
     }
 }

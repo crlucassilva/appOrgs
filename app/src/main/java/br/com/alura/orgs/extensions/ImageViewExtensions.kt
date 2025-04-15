@@ -11,7 +11,8 @@ import coil3.request.error
 import coil3.request.fallback
 import coil3.request.placeholder
 
-fun ImageView.loadImage(url: String? = null) {
+fun ImageView.loadImage(url: String? = null,
+                        fallback: Int = R.drawable.default_image) {
 
     val imageLoader = ImageLoader.Builder(this.context)
         .components {

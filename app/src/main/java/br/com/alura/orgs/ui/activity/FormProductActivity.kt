@@ -2,17 +2,12 @@ package br.com.alura.orgs.ui.activity
 
 import android.os.Bundle
 import android.util.Log
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import br.com.alura.orgs.R
 import br.com.alura.orgs.dao.ProductDao
 import br.com.alura.orgs.databinding.ActivityFormProductBinding
-import br.com.alura.orgs.databinding.ImageFormBinding
 import br.com.alura.orgs.extensions.loadImage
 import br.com.alura.orgs.model.Product
 import br.com.alura.orgs.ui.dialog.DialogImageForm
-import coil3.load
-import coil3.request.placeholder
 import java.math.BigDecimal
 
 class FormProductActivity :
@@ -28,6 +23,7 @@ class FormProductActivity :
         super.onCreate(savedInstanceState)
         configSaveButton()
         setContentView(binding.root)
+        title = "Cadastrar Produto"
         configDialog()
     }
 
