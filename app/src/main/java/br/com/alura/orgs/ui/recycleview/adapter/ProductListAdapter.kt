@@ -9,9 +9,6 @@ import br.com.alura.orgs.databinding.ProductItemBinding
 import br.com.alura.orgs.extensions.formaterCurrencyBrazil
 import br.com.alura.orgs.extensions.loadImage
 import br.com.alura.orgs.model.Product
-import java.math.BigDecimal
-import java.text.NumberFormat
-import java.util.Locale
 
 class ProductListAdapter(
     private val context: Context,

@@ -2,10 +2,12 @@ package br.com.alura.orgs.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import br.com.alura.orgs.dao.ProductDao
 import br.com.alura.orgs.databinding.ActivityProductsListBinding
 import br.com.alura.orgs.ui.recycleview.adapter.ProductListAdapter
+import kotlin.math.log
 
 class ProductsListActivity : AppCompatActivity() {
 
@@ -20,6 +22,10 @@ class ProductsListActivity : AppCompatActivity() {
         setContentView(binding.root)
         configRecycleView()
         configFab()
+        binding.actvityProductsListSwipeReflesh.setOnRefreshListener {
+            Log.i("TAG", "onCreate: Atualizando")
+            binding.actvityProductsListSwipeReflesh.isRefreshing = false
+        }
     }
 
     override fun onResume() {

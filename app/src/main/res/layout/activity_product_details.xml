@@ -58,7 +58,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintVertical_bias="0.0"
             app:layout_constraintTop_toBottomOf="@+id/activity_product_detail_value"
-            tools:text="@tools:sample/lorem[1]" />
+            tools:text="@tools:sample/lorem[5]" />
 
         <TextView
             android:id="@+id/activity_product_detail_description"
@@ -72,6 +72,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintVertical_bias="0"
             android:layout_margin="16dp"
-            tools:text="@tools:sample/lorem"/>
+            tools:text="@tools:sample/lorem/random"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
