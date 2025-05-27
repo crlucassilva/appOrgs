@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import br.com.alura.orgs.dao.ProductDao
 import br.com.alura.orgs.databinding.ActivityProductsListBinding
 import br.com.alura.orgs.ui.recycleview.adapter.ProductListAdapter
-import kotlin.math.log
 
 class ProductsListActivity : AppCompatActivity() {
 
