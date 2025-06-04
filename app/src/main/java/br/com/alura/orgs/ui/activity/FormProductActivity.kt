@@ -3,7 +3,9 @@ package br.com.alura.orgs.ui.activity
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.room.Room
 import br.com.alura.orgs.dao.ProductDao
+import br.com.alura.orgs.database.AppDatabase
 import br.com.alura.orgs.databinding.ActivityFormProductBinding
 import br.com.alura.orgs.extensions.loadImage
 import br.com.alura.orgs.model.Product
@@ -39,11 +41,19 @@ class FormProductActivity :
 
     private fun configSaveButton() {
         val saveButton = binding.activityFormProductSaveButton
-        val dao = ProductDao()
+        val db = Room.databaseBuilder(
+            this,
+            AppDatabase::class.java,
+            "orgs.db"
+        ).allowMainThreadQueries()
+            .build()
+        val productDao = db.productDao()
+
         saveButton.setOnClickListener {
-            val productNovo = createProduct()
-            dao.add(productNovo)
-            Log.i("FormProductActivity", "onCreate: ${dao.findAll()}")
+            val newProduct = createProduct()
+            productDao.save(
+                newProduct
+            )
             finish()
         }
     }

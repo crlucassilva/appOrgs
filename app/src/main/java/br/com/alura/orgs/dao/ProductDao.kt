@@ -6,13 +6,7 @@ import java.math.BigDecimal
 class ProductDao {
 
     companion object {
-        private val products = mutableListOf<Product>(
-            Product(
-                name = "Cesta de Frutas",
-                description = "Frutas de época",
-                value = BigDecimal("19.83")
-            )
-        )
+        private val products = mutableListOf<Product>()
     }
 
     fun add(product: Product) {

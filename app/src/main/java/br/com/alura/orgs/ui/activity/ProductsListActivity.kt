@@ -4,7 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.room.Room
 import br.com.alura.orgs.dao.ProductDao
+import br.com.alura.orgs.database.AppDatabase
 import br.com.alura.orgs.databinding.ActivityProductsListBinding
 import br.com.alura.orgs.ui.recycleview.adapter.ProductListAdapter
 
@@ -25,11 +27,19 @@ class ProductsListActivity : AppCompatActivity() {
             Log.i("TAG", "onCreate: Atualizando")
             binding.actvityProductsListSwipeReflesh.isRefreshing = false
         }
+
     }
 
     override fun onResume() {
         super.onResume()
-        adapter.update(dao.findAll())
+        val db = Room.databaseBuilder(
+            this,
+            AppDatabase::class.java,
+            "orgs.db"
+        ).allowMainThreadQueries()
+            .build()
+        val productDao = db.productDao()
+        adapter.update(productDao.findAll())
     }
 
     private fun configFab() {
