@@ -1,10 +1,7 @@
 package br.com.alura.orgs.ui.activity
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.room.Room
-import br.com.alura.orgs.dao.ProductDao
 import br.com.alura.orgs.database.AppDatabase
 import br.com.alura.orgs.databinding.ActivityFormProductBinding
 import br.com.alura.orgs.extensions.loadImage
@@ -30,7 +27,6 @@ class FormProductActivity :
     }
 
     private fun configDialog() {
-
         binding.activityFormProductImageView.setOnClickListener {
             DialogImageForm(this).show(url) { image ->
                 url = image
@@ -41,12 +37,7 @@ class FormProductActivity :
 
     private fun configSaveButton() {
         val saveButton = binding.activityFormProductSaveButton
-        val db = Room.databaseBuilder(
-            this,
-            AppDatabase::class.java,
-            "orgs.db"
-        ).allowMainThreadQueries()
-            .build()
+        val db = AppDatabase.getInstance(this)
         val productDao = db.productDao()
 
         saveButton.setOnClickListener {
@@ -61,8 +52,8 @@ class FormProductActivity :
     private fun createProduct(): Product {
         val fieldName = binding.activityFormProductName
         val name = fieldName.text.toString()
-        val fielddescription = binding.activityFormProductDescription
-        val description = fielddescription.text.toString()
+        val fieldDescription = binding.activityFormProductDescription
+        val description = fieldDescription.text.toString()
         val fieldValue = binding.activityFormProductValue
         val valueInText = fieldValue.text.toString()
         val value = if (valueInText.isBlank()) {
