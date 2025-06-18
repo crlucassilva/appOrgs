@@ -1,6 +1,9 @@
 package br.com.alura.orgs.ui.activity
 
 import android.os.Bundle
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import br.com.alura.orgs.R
 import br.com.alura.orgs.databinding.ActivityProductDetailsBinding
@@ -18,6 +21,23 @@ class ProductDetailsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         tryLoadProduct()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_product_details, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.menu_product_details_remove -> {
+                Log.i("Product Details", "onOptionsItemSelected: Remover")
+            }
+            R.id.menu_product_details_edit -> {
+                Log.i("Product Details", "onOptionsItemSelected: Editar")
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun tryLoadProduct() {

@@ -10,7 +10,7 @@ import br.com.alura.orgs.database.converter.Converters
 import br.com.alura.orgs.database.dao.ProductDao
 import br.com.alura.orgs.model.Product
 
-@Database(entities = [Product::class], version = 1)
+@Database(entities = [Product::class], version = 1, exportSchema = true)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun productDao(): ProductDao

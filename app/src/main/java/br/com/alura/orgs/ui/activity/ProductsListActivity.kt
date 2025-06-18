@@ -4,15 +4,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import br.com.alura.orgs.dao.ProductDao
 import br.com.alura.orgs.database.AppDatabase
 import br.com.alura.orgs.databinding.ActivityProductsListBinding
 import br.com.alura.orgs.ui.recycleview.adapter.ProductListAdapter
 
 class ProductsListActivity : AppCompatActivity() {
 
-    private val dao = ProductDao()
-    private val adapter = ProductListAdapter(context = this, products = dao.findAll())
+    private val adapter = ProductListAdapter(context = this)
     private val binding by lazy {
         ActivityProductsListBinding.inflate(layoutInflater)
     }
@@ -60,5 +58,12 @@ class ProductsListActivity : AppCompatActivity() {
             }
             startActivity(intent)
         }
+        adapter.whenClickOnTheDelete = {
+            Log.i("Product Details", "onOptionsItemSelected: Remover")
+        }
+        adapter.whenClickOnTheEdit = {
+            Log.i("Product Details", "onOptionsItemSelected: Editar")
+        }
     }
+
 }
