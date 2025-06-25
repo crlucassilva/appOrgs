@@ -3,6 +3,7 @@ package br.com.alura.orgs.ui.activity
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import br.com.alura.orgs.database.AppDatabase
+import br.com.alura.orgs.database.dao.ProductDao
 import br.com.alura.orgs.databinding.ActivityFormProductBinding
 import br.com.alura.orgs.extensions.loadImage
 import br.com.alura.orgs.model.Product
@@ -15,8 +16,11 @@ class FormProductActivity :
     private val binding by lazy {
         ActivityFormProductBinding.inflate(layoutInflater)
     }
-
     private var url: String? = null
+    private var productId = 0L
+    private val productDao: ProductDao by lazy {
+        AppDatabase.getInstance(this).productDao()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,6 +28,31 @@ class FormProductActivity :
         setContentView(binding.root)
         title = "Cadastrar Produto"
         configDialog()
+        tryLoadProduct()
+    }
+
+    private fun tryLoadProduct() {
+        productId = intent.getLongExtra(CHAVE_PRODUTO_ID, 0L)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        findProduct()
+    }
+
+    private fun findProduct() {
+        productDao.findById(productId)?.let {
+            title = "Alterar Produto"
+            fillInFields(it)
+        }
+    }
+
+    private fun fillInFields(product: Product) {
+        url = product.image
+        binding.activityFormProductImageView.loadImage(product.image)
+        binding.activityFormProductName.setText(product.name)
+        binding.activityFormProductDescription.setText(product.description)
+        binding.activityFormProductValue.setText(product.value.toPlainString())
     }
 
     private fun configDialog() {
@@ -37,14 +66,14 @@ class FormProductActivity :
 
     private fun configSaveButton() {
         val saveButton = binding.activityFormProductSaveButton
-        val db = AppDatabase.getInstance(this)
-        val productDao = db.productDao()
-
         saveButton.setOnClickListener {
             val newProduct = createProduct()
-            productDao.save(
-                newProduct
-            )
+//            if (productId > 0) {
+//                productDao.update(newProduct)
+//            } else {
+//                productDao.save(newProduct)
+//            }
+            productDao.save(newProduct)
             finish()
         }
     }
@@ -63,6 +92,7 @@ class FormProductActivity :
         }
 
         return Product(
+            id = productId,
             name = name,
             description = description,
             value = value,
