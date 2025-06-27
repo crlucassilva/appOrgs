@@ -24,4 +24,22 @@ interface ProductDao {
 
     @Query("SELECt * FROM Product WHERE id = :id")
     fun findById(id: Long): Product?
+
+    @Query("SELECT * FROM Product ORDER BY name DESC")
+    fun findAllOrderNameDesc(): List<Product>
+
+    @Query("SELECT * FROM Product ORDER BY name ASC")
+    fun findAllOrderNameAsc(): List<Product>
+
+    @Query("SELECT * FROM Product ORDER BY description DESC")
+    fun findAllOrderDescriptionDesc(): List<Product>
+
+    @Query("SELECT * FROM Product ORDER BY description ASC")
+    fun findAllOrderDescriptionAsc(): List<Product>
+
+    @Query("SELECT * FROM Product ORDER BY value DESC")
+    fun findAllOrderValueDesc(): List<Product>
+
+    @Query("SELECT * FROM Product ORDER BY value ASC")
+    fun findAllOrderValueAsc(): List<Product>
 }
