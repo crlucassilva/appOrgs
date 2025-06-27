@@ -2,7 +2,6 @@ package br.com.alura.orgs.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -18,7 +17,6 @@ class ProductsListActivity : AppCompatActivity() {
     private val binding by lazy {
         ActivityProductsListBinding.inflate(layoutInflater)
     }
-
     private val productDao by lazy {
         AppDatabase.getInstance(this).productDao()
     }
@@ -29,15 +27,14 @@ class ProductsListActivity : AppCompatActivity() {
         configRecycleView()
         configFab()
         binding.actvityProductsListSwipeReflesh.setOnRefreshListener {
-            Log.i("TAG", "onCreate: Atualizando")
+            updateList()
             binding.actvityProductsListSwipeReflesh.isRefreshing = false
         }
-
     }
 
     override fun onResume() {
         super.onResume()
-        adapter.update(productDao.findAll())
+        updateList()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -92,10 +89,18 @@ class ProductsListActivity : AppCompatActivity() {
             startActivity(intent)
         }
         adapter.whenClickOnTheDelete = {
-            Log.i("Product Details", "onOptionsItemSelected: Remover")
+            productDao.remove(it)
+            updateList()
         }
         adapter.whenClickOnTheEdit = {
-            Log.i("Product Details", "onOptionsItemSelected: Editar")
+            Intent(this, FormProductActivity::class.java).apply {
+                putExtra(CHAVE_PRODUTO_ID, it.id)
+                startActivity(this)
+            }
         }
+    }
+
+    private fun updateList() {
+        adapter.update(productDao.findAll())
     }
 }
