@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import br.com.alura.orgs.R
 import br.com.alura.orgs.database.AppDatabase
@@ -50,8 +51,18 @@ class ProductDetailsActivity() : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_product_details_remove -> {
-                product?.let { productDao.remove(it) }
-                finish()
+                val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+                builder
+                    .setMessage("Você tem certeza que quer remover esse item?")
+                    .setTitle("Excluir item?")
+                    .setPositiveButton("Sim") { dialog, which ->
+                    product?.let { productDao.remove(it) }
+                    finish()
+                }
+                    .setNegativeButton("Não") { dialog, which ->
+                    }
+                val dialog: AlertDialog = builder.create()
+                dialog.show()
             }
 
             R.id.menu_product_details_edit -> {

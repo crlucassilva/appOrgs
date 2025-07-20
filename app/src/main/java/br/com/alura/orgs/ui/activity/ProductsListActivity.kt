@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import br.com.alura.orgs.R
 import br.com.alura.orgs.database.AppDatabase
@@ -89,8 +90,18 @@ class ProductsListActivity : AppCompatActivity() {
             startActivity(intent)
         }
         adapter.whenClickOnTheDelete = {
-            productDao.remove(it)
-            updateList()
+            val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+            builder
+                .setMessage("Você tem certeza que quer remover esse item?")
+                .setTitle("Excluir item?")
+                .setPositiveButton("Sim") { dialog, which ->
+                    productDao.remove(it)
+                    updateList()
+                }
+                .setNegativeButton("Não") { dialog, which ->
+                }
+            val dialog: AlertDialog = builder.create()
+            dialog.show()
         }
         adapter.whenClickOnTheEdit = {
             Intent(this, FormProductActivity::class.java).apply {
