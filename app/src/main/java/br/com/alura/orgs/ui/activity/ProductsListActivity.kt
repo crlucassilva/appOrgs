@@ -13,6 +13,7 @@ import br.com.alura.orgs.model.Product
 import br.com.alura.orgs.ui.recycleview.adapter.ProductListAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -49,23 +50,27 @@ class ProductsListActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val orderedProducts: List<Product>? = when (item.itemId) {
-            R.id.menu_product_list_name_desc ->
-                productDao.findAllOrderNameDesc()
-            R.id.menu_product_list_name_asc ->
-                productDao.findAllOrderNameAsc()
-            R.id.menu_product_list_description_desc ->
-                productDao.findAllOrderDescriptionDesc()
-            R.id.menu_product_list_description_asc ->
-                productDao.findAllOrderDescriptionAsc()
-            R.id.menu_product_list_value_desc ->
-                productDao.findAllOrderValueDesc()
-            R.id.menu_product_list_value_asc ->
-                productDao.findAllOrderValueAsc()
-            else -> null
-        }
-        orderedProducts?.let {
-            adapter.update(it)
+        scope.launch {
+            val orderedProducts: List<Product>? = when (item.itemId) {
+                R.id.menu_product_list_name_desc ->
+                    productDao.findAllOrderNameDesc()
+                R.id.menu_product_list_name_asc ->
+                    productDao.findAllOrderNameAsc()
+                R.id.menu_product_list_description_desc ->
+                    productDao.findAllOrderDescriptionDesc()
+                R.id.menu_product_list_description_asc ->
+                    productDao.findAllOrderDescriptionAsc()
+                R.id.menu_product_list_value_desc ->
+                    productDao.findAllOrderValueDesc()
+                R.id.menu_product_list_value_asc ->
+                    productDao.findAllOrderValueAsc()
+                else -> null
+            }
+            withContext(Dispatchers.Main) {
+                orderedProducts?.let {
+                    adapter.update(it)
+                }
+            }
         }
         return super.onOptionsItemSelected(item)
     }
