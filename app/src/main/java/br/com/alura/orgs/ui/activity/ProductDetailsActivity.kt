@@ -12,6 +12,10 @@ import br.com.alura.orgs.databinding.ActivityProductDetailsBinding
 import br.com.alura.orgs.extensions.formaterCurrencyBrazil
 import br.com.alura.orgs.extensions.loadImage
 import br.com.alura.orgs.model.Product
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ProductDetailsActivity() : AppCompatActivity() {
 
@@ -20,6 +24,7 @@ class ProductDetailsActivity() : AppCompatActivity() {
     private val binding by lazy {
         ActivityProductDetailsBinding.inflate(layoutInflater)
     }
+    private val scope = CoroutineScope(Dispatchers.IO)
 
     private val productDao by lazy {
         AppDatabase.getInstance(this).productDao()
@@ -37,10 +42,14 @@ class ProductDetailsActivity() : AppCompatActivity() {
     }
 
     private fun findProduct() {
-        product = productDao.findById(productId)
-        product?.let {
-            fillInFields(it)
-        } ?: finish()
+        scope.launch {
+            product = productDao.findById(productId)
+            withContext(Dispatchers.Main) {
+                product?.let {
+                    fillInFields(it)
+                } ?: finish()
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -56,8 +65,10 @@ class ProductDetailsActivity() : AppCompatActivity() {
                     .setMessage("Você tem certeza que quer remover esse item?")
                     .setTitle("Excluir item?")
                     .setPositiveButton("Sim") { dialog, which ->
-                    product?.let { productDao.remove(it) }
-                    finish()
+                        scope.launch {
+                            product?.let { productDao.remove(it) }
+                            finish()
+                        }
                 }
                     .setNegativeButton("Não") { dialog, which ->
                     }

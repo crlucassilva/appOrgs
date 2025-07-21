@@ -8,6 +8,10 @@ import br.com.alura.orgs.databinding.ActivityFormProductBinding
 import br.com.alura.orgs.extensions.loadImage
 import br.com.alura.orgs.model.Product
 import br.com.alura.orgs.ui.dialog.DialogImageForm
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.math.BigDecimal
 
 class FormProductActivity :
@@ -21,6 +25,7 @@ class FormProductActivity :
     private val productDao: ProductDao by lazy {
         AppDatabase.getInstance(this).productDao()
     }
+    private val scope = CoroutineScope(Dispatchers.IO)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,9 +46,13 @@ class FormProductActivity :
     }
 
     private fun findProduct() {
-        productDao.findById(productId)?.let {
-            title = "Alterar Produto"
-            fillInFields(it)
+        scope.launch {
+            productDao.findById(productId)?.let {
+                withContext(Dispatchers.Main) {
+                    title = "Alterar Produto"
+                    fillInFields(it)
+                }
+            }
         }
     }
 
@@ -73,8 +82,10 @@ class FormProductActivity :
 //            } else {
 //                productDao.save(newProduct)
 //            }
-            productDao.save(newProduct)
-            finish()
+            scope.launch {
+                productDao.save(newProduct)
+                finish()
+            }
         }
     }
 

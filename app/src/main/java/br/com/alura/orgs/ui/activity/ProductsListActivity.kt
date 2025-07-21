@@ -11,6 +11,10 @@ import br.com.alura.orgs.database.AppDatabase
 import br.com.alura.orgs.databinding.ActivityProductsListBinding
 import br.com.alura.orgs.model.Product
 import br.com.alura.orgs.ui.recycleview.adapter.ProductListAdapter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ProductsListActivity : AppCompatActivity() {
 
@@ -21,6 +25,7 @@ class ProductsListActivity : AppCompatActivity() {
     private val productDao by lazy {
         AppDatabase.getInstance(this).productDao()
     }
+    private val scope = CoroutineScope(Dispatchers.IO)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,8 +100,10 @@ class ProductsListActivity : AppCompatActivity() {
                 .setMessage("Você tem certeza que quer remover esse item?")
                 .setTitle("Excluir item?")
                 .setPositiveButton("Sim") { dialog, which ->
-                    productDao.remove(it)
-                    updateList()
+                    scope.launch {
+                        productDao.remove(it)
+                        updateList()
+                    }
                 }
                 .setNegativeButton("Não") { dialog, which ->
                 }
@@ -112,6 +119,18 @@ class ProductsListActivity : AppCompatActivity() {
     }
 
     private fun updateList() {
-        adapter.update(productDao.findAll())
+//        val scope = MainScope()
+//        scope.launch {
+//            val products = withContext(Dispatchers.IO) {
+//                productDao.findAll()
+//            }
+//            adapter.update(products)
+//        }
+        scope.launch {
+            val products = productDao.findAll()
+            withContext(Dispatchers.Main) {
+                adapter.update(products)
+            }
+        }
     }
 }
