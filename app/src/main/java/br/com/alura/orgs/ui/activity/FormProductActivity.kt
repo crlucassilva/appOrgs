@@ -2,16 +2,14 @@ package br.com.alura.orgs.ui.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import br.com.alura.orgs.database.AppDatabase
 import br.com.alura.orgs.database.dao.ProductDao
 import br.com.alura.orgs.databinding.ActivityFormProductBinding
 import br.com.alura.orgs.extensions.loadImage
 import br.com.alura.orgs.model.Product
 import br.com.alura.orgs.ui.dialog.DialogImageForm
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.math.BigDecimal
 
 class FormProductActivity :
@@ -25,7 +23,6 @@ class FormProductActivity :
     private val productDao: ProductDao by lazy {
         AppDatabase.getInstance(this).productDao()
     }
-    private val scope = CoroutineScope(Dispatchers.IO)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,12 +43,10 @@ class FormProductActivity :
     }
 
     private fun findProduct() {
-        scope.launch {
+        lifecycleScope.launch {
             productDao.findById(productId)?.let {
-                withContext(Dispatchers.Main) {
-                    title = "Alterar Produto"
-                    fillInFields(it)
-                }
+                title = "Alterar Produto"
+                fillInFields(it)
             }
         }
     }
@@ -77,12 +72,7 @@ class FormProductActivity :
         val saveButton = binding.activityFormProductSaveButton
         saveButton.setOnClickListener {
             val newProduct = createProduct()
-//            if (productId > 0) {
-//                productDao.update(newProduct)
-//            } else {
-//                productDao.save(newProduct)
-//            }
-            scope.launch {
+            lifecycleScope.launch {
                 productDao.save(newProduct)
                 finish()
             }

@@ -11,35 +11,35 @@ import br.com.alura.orgs.model.Product
 interface ProductDao {
 
     @Query("SELECT * FROM Product")
-    fun findAll(): List<Product>
+    suspend fun findAll(): List<Product>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun save(vararg product: Product)
+    suspend fun save(vararg product: Product)
 
     @Delete
-    fun remove(product: Product)
+    suspend fun remove(product: Product)
 
 //    @Update
 //    fun update(product: Product)
 
     @Query("SELECt * FROM Product WHERE id = :id")
-    fun findById(id: Long): Product?
+    suspend fun findById(id: Long): Product?
 
     @Query("SELECT * FROM Product ORDER BY name DESC")
-    fun findAllOrderNameDesc(): List<Product>
+    suspend fun findAllOrderNameDesc(): List<Product>
 
     @Query("SELECT * FROM Product ORDER BY name ASC")
-    fun findAllOrderNameAsc(): List<Product>
+    suspend fun findAllOrderNameAsc(): List<Product>
 
     @Query("SELECT * FROM Product ORDER BY description DESC")
-    fun findAllOrderDescriptionDesc(): List<Product>
+    suspend fun findAllOrderDescriptionDesc(): List<Product>
 
     @Query("SELECT * FROM Product ORDER BY description ASC")
-    fun findAllOrderDescriptionAsc(): List<Product>
+    suspend fun findAllOrderDescriptionAsc(): List<Product>
 
     @Query("SELECT * FROM Product ORDER BY value DESC")
-    fun findAllOrderValueDesc(): List<Product>
+    suspend fun findAllOrderValueDesc(): List<Product>
 
     @Query("SELECT * FROM Product ORDER BY value ASC")
-    fun findAllOrderValueAsc(): List<Product>
+    suspend fun findAllOrderValueAsc(): List<Product>
 }

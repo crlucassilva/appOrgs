@@ -6,16 +6,13 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import br.com.alura.orgs.R
 import br.com.alura.orgs.database.AppDatabase
 import br.com.alura.orgs.databinding.ActivityProductsListBinding
 import br.com.alura.orgs.model.Product
 import br.com.alura.orgs.ui.recycleview.adapter.ProductListAdapter
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class ProductsListActivity : AppCompatActivity() {
 
@@ -26,7 +23,6 @@ class ProductsListActivity : AppCompatActivity() {
     private val productDao by lazy {
         AppDatabase.getInstance(this).productDao()
     }
-    private val scope = CoroutineScope(Dispatchers.IO)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,26 +46,31 @@ class ProductsListActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        scope.launch {
+        lifecycleScope.launch {
             val orderedProducts: List<Product>? = when (item.itemId) {
                 R.id.menu_product_list_name_desc ->
                     productDao.findAllOrderNameDesc()
+
                 R.id.menu_product_list_name_asc ->
                     productDao.findAllOrderNameAsc()
+
                 R.id.menu_product_list_description_desc ->
                     productDao.findAllOrderDescriptionDesc()
+
                 R.id.menu_product_list_description_asc ->
                     productDao.findAllOrderDescriptionAsc()
+
                 R.id.menu_product_list_value_desc ->
                     productDao.findAllOrderValueDesc()
+
                 R.id.menu_product_list_value_asc ->
                     productDao.findAllOrderValueAsc()
+
                 else -> null
             }
-            withContext(Dispatchers.Main) {
-                orderedProducts?.let {
-                    adapter.update(it)
-                }
+
+            orderedProducts?.let {
+                adapter.update(it)
             }
         }
         return super.onOptionsItemSelected(item)
@@ -105,7 +106,7 @@ class ProductsListActivity : AppCompatActivity() {
                 .setMessage("Você tem certeza que quer remover esse item?")
                 .setTitle("Excluir item?")
                 .setPositiveButton("Sim") { dialog, which ->
-                    scope.launch {
+                    lifecycleScope.launch {
                         productDao.remove(it)
                         updateList()
                     }
@@ -124,18 +125,9 @@ class ProductsListActivity : AppCompatActivity() {
     }
 
     private fun updateList() {
-//        val scope = MainScope()
-//        scope.launch {
-//            val products = withContext(Dispatchers.IO) {
-//                productDao.findAll()
-//            }
-//            adapter.update(products)
-//        }
-        scope.launch {
+        lifecycleScope.launch {
             val products = productDao.findAll()
-            withContext(Dispatchers.Main) {
-                adapter.update(products)
-            }
+            adapter.update(products)
         }
     }
 }
