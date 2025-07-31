@@ -31,15 +31,11 @@ class FormProductActivity :
         title = "Cadastrar Produto"
         configDialog()
         tryLoadProduct()
+        findProduct()
     }
 
     private fun tryLoadProduct() {
         productId = intent.getLongExtra(CHAVE_PRODUTO_ID, 0L)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        findProduct()
     }
 
     private fun findProduct() {
