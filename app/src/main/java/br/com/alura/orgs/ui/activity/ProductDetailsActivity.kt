@@ -31,22 +31,19 @@ class ProductDetailsActivity() : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         tryLoadProduct()
-    }
-
-    override fun onResume() {
-        super.onResume()
         findProduct()
     }
 
     private fun findProduct() {
         lifecycleScope.launch {
-            product = productDao.findById(productId)
-            product?.let {
-                fillInFields(it)
-            } ?: finish()
+            productDao.findById(productId).collect { result ->
+                result?.let {
+                    product = it
+                    fillInFields(it)
+                } ?: finish()
+            }
         }
     }
-
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_product_details, menu)

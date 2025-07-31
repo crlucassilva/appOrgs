@@ -44,9 +44,11 @@ class FormProductActivity :
 
     private fun findProduct() {
         lifecycleScope.launch {
-            productDao.findById(productId)?.let {
-                title = "Alterar Produto"
-                fillInFields(it)
+            productDao.findById(productId).collect { product ->
+                product?.let {
+                    title = "Alterar Produto"
+                    fillInFields(it)
+                }
             }
         }
     }

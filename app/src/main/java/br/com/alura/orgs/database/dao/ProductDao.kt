@@ -6,12 +6,13 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import br.com.alura.orgs.model.Product
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ProductDao {
 
     @Query("SELECT * FROM Product")
-    suspend fun findAll(): List<Product>
+    fun findAll(): Flow<List<Product>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun save(vararg product: Product)
@@ -23,7 +24,7 @@ interface ProductDao {
 //    fun update(product: Product)
 
     @Query("SELECt * FROM Product WHERE id = :id")
-    suspend fun findById(id: Long): Product?
+    fun findById(id: Long): Flow<Product?>
 
     @Query("SELECT * FROM Product ORDER BY name DESC")
     suspend fun findAllOrderNameDesc(): List<Product>

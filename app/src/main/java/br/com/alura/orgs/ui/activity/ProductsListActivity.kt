@@ -33,10 +33,6 @@ class ProductsListActivity : AppCompatActivity() {
             updateList()
             binding.actvityProductsListSwipeReflesh.isRefreshing = false
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
         updateList()
     }
 
@@ -126,8 +122,9 @@ class ProductsListActivity : AppCompatActivity() {
 
     private fun updateList() {
         lifecycleScope.launch {
-            val products = productDao.findAll()
-            adapter.update(products)
+            productDao.findAll().collect { products ->
+                adapter.update(products)
+            }
         }
     }
 }
