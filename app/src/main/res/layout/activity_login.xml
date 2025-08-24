@@ -15,12 +15,13 @@
             android:id="@+id/activity_login_imageView"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/activity_login_title"
+            app:layout_constraintStart_toStartOf="@id/activity_login_title"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="125dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.15"
             app:srcCompat="@drawable/orgs_logo"
-            tools:srcCompat="@tools:sample/backgrounds/scenic" />
+            />
 
         <TextView
             android:id="@+id/activity_login_title"
@@ -33,9 +34,11 @@
             app:layout_constraintTop_toBottomOf="@+id/activity_login_imageView" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/activity_login_textInputlayout_user"
+            android:id="@+id/activity_login_textinputlayout_user"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_margin="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
@@ -51,14 +54,14 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/activity_login_TextInputlayout_password"
+            android:id="@+id/activity_login_textinputlayout_password"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_margin="16dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/activity_login_textInputlayout_user">
+            app:layout_constraintTop_toBottomOf="@+id/activity_login_textinputlayout_user">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/activity_login_password"
@@ -72,21 +75,26 @@
             android:id="@+id/activity_login_button_enter"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_margin="16dp"
+            android:layout_marginTop="16dp"
             android:text="Entrar"
-            app:layout_constraintTop_toBottomOf="@+id/activity_login_TextInputlayout_password" />
+            app:layout_constraintStart_toStartOf="@+id/activity_login_textinputlayout_password"
+            app:layout_constraintEnd_toEndOf="@+id/activity_login_textinputlayout_password"
+            app:layout_constraintTop_toBottomOf="@+id/activity_login_textinputlayout_password" />
 
         <Button
             android:id="@+id/activity_login_button_register"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Cadastrar Usuário"
             style="@style/Widget.MaterialComponents.Button.TextButton"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/activity_login_button_enter" />
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@android:color/transparent"
+            android:textStyle="bold"
+            android:text="Cadastrar Usuário"
+            app:layout_constraintTop_toBottomOf="@+id/activity_login_button_enter"
+            app:layout_constraintEnd_toEndOf="@+id/activity_login_button_enter"
+            app:layout_constraintStart_toStartOf="@+id/activity_login_button_enter"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
