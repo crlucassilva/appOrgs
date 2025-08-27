@@ -2,6 +2,7 @@ package br.com.alura.orgs.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
@@ -22,6 +23,10 @@ class ProductsListActivity : AppCompatActivity() {
     }
     private val productDao by lazy {
         AppDatabase.getInstance(this).productDao()
+    }
+
+    private val userDao by lazy {
+        AppDatabase.getInstance(this).userDao()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -122,8 +127,15 @@ class ProductsListActivity : AppCompatActivity() {
 
     private fun updateList() {
         lifecycleScope.launch {
-            productDao.findAll().collect { products ->
-                adapter.update(products)
+            launch {
+                productDao.findAll().collect { products ->
+                    adapter.update(products)
+                }
+            }
+            intent.getStringExtra("KEY_USER_ID")?.let { userId ->
+                userDao.findId(userId).collect {
+                    Log.i("ListaProdutos", "onCreate: $it")
+                }
             }
         }
     }
