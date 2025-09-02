@@ -1,13 +1,18 @@
 package br.com.alura.orgs.ui.activity
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.datastore.dataStore
 import androidx.lifecycle.lifecycleScope
+import androidx.room.Database
 import br.com.alura.orgs.database.AppDatabase
 import br.com.alura.orgs.database.dao.ProductDao
 import br.com.alura.orgs.databinding.ActivityFormProductBinding
 import br.com.alura.orgs.extensions.loadImage
 import br.com.alura.orgs.model.Product
+import br.com.alura.orgs.preferences.dataStore
+import br.com.alura.orgs.preferences.loggedUserPreferences
 import br.com.alura.orgs.ui.dialog.DialogImageForm
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
@@ -18,6 +23,11 @@ class FormProductActivity :
     private val binding by lazy {
         ActivityFormProductBinding.inflate(layoutInflater)
     }
+
+    private val userDao by lazy {
+        AppDatabase.getInstance(this).userDao()
+    }
+
     private var url: String? = null
     private var productId = 0L
     private val productDao: ProductDao by lazy {
@@ -32,6 +42,16 @@ class FormProductActivity :
         configDialog()
         tryLoadProduct()
         findProduct()
+        lifecycleScope.launch {
+            dataStore.data.collect { preferences ->
+                preferences[loggedUserPreferences]?.let { userId ->
+                    userDao.findId(userId).collect {
+                        Log.i("FormularioProdutos", "onCreate: $it")
+                    }
+                }
+            }
+        }
+
     }
 
     private fun tryLoadProduct() {

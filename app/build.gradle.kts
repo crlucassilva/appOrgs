@@ -76,4 +76,5 @@ dependencies {
     implementation("androidx.room:room-ktx:$room_version")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version")
+    implementation ("androidx.datastore:datastore-preferences:1.1.7")
 }

@@ -12,6 +12,8 @@ import br.com.alura.orgs.R
 import br.com.alura.orgs.database.AppDatabase
 import br.com.alura.orgs.databinding.ActivityProductsListBinding
 import br.com.alura.orgs.model.Product
+import br.com.alura.orgs.preferences.dataStore
+import br.com.alura.orgs.preferences.loggedUserPreferences
 import br.com.alura.orgs.ui.recycleview.adapter.ProductListAdapter
 import kotlinx.coroutines.launch
 
@@ -132,9 +134,12 @@ class ProductsListActivity : AppCompatActivity() {
                     adapter.update(products)
                 }
             }
-            intent.getStringExtra("KEY_USER_ID")?.let { userId ->
-                userDao.findId(userId).collect {
-                    Log.i("ListaProdutos", "onCreate: $it")
+
+            dataStore.data.collect { preferences ->
+                preferences[loggedUserPreferences]?.let { userId ->
+                    userDao.findId(userId).collect {
+                        Log.i("ListaProdutos", "onCreate: $it")
+                    }
                 }
             }
         }
