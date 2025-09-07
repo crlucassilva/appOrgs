@@ -51,41 +51,43 @@ class ProductsListActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        lifecycleScope.launch {
-            val orderedProducts: List<Product>? = when (item.itemId) {
-                R.id.menu_product_list_name_desc ->
-                    productDao.findAllOrderNameDesc()
-
-                R.id.menu_product_list_name_asc ->
-                    productDao.findAllOrderNameAsc()
-
-                R.id.menu_product_list_description_desc ->
-                    productDao.findAllOrderDescriptionDesc()
-
-                R.id.menu_product_list_description_asc ->
-                    productDao.findAllOrderDescriptionAsc()
-
-                R.id.menu_product_list_value_desc ->
-                    productDao.findAllOrderValueDesc()
-
-                R.id.menu_product_list_value_asc ->
-                    productDao.findAllOrderValueAsc()
-
-                else -> null
-            }
-            orderedProducts?.let {
-                adapter.update(it)
-            }
-
-            when(item.itemId) {
-                R.id.menu_list_products_exit -> {
-                    dataStore.edit { preferences ->
-                        preferences.remove(loggedUserPreferences)
+        return when (item.itemId) {
+            R.id.menu_product_list_name_desc,
+            R.id.menu_product_list_name_asc,
+            R.id.menu_product_list_description_desc,
+            R.id.menu_product_list_description_asc,
+            R.id.menu_product_list_value_desc,
+            R.id.menu_product_list_value_asc -> {
+                lifecycleScope.launch {
+                    val orderedProducts: List<Product>? = when (item.itemId) {
+                        R.id.menu_product_list_name_desc -> productDao.findAllOrderNameDesc()
+                        R.id.menu_product_list_name_asc -> productDao.findAllOrderNameAsc()
+                        R.id.menu_product_list_description_desc -> productDao.findAllOrderDescriptionDesc()
+                        R.id.menu_product_list_description_asc -> productDao.findAllOrderDescriptionAsc()
+                        R.id.menu_product_list_value_desc -> productDao.findAllOrderValueDesc()
+                        R.id.menu_product_list_value_asc -> productDao.findAllOrderValueAsc()
+                        else -> null
                     }
+                    orderedProducts?.let { adapter.update(it) }
                 }
+                true
             }
+
+            R.id.menu_list_products_exit -> {
+                AlertDialog.Builder(this)
+                    .setMessage("Você tem certeza que deseja sair?")
+                    .setPositiveButton("Sim") { dialog, which ->
+                        lifecycleScope.launch {
+                            dataStore.edit { it.remove(loggedUserPreferences) }
+                            finish()
+                        }
+                    }
+                    .setNegativeButton("Não", null)
+                    .show()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
-        return super.onOptionsItemSelected(item)
     }
 
     private fun configFab() {
