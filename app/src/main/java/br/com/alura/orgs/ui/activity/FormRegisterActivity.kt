@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import br.com.alura.orgs.database.AppDatabase
 import br.com.alura.orgs.databinding.ActivityFormRegisterBinding
+import br.com.alura.orgs.extensions.toHash
 import br.com.alura.orgs.model.User
 import kotlinx.coroutines.launch
 
@@ -48,7 +49,7 @@ class FormRegisterActivity : AppCompatActivity() {
     private fun createUser(): User {
         val user = binding.activityFormRegisterUser.text.toString()
         val name = binding.activityFormRegisterName.text.toString()
-        val password = binding.activityFormRegisterPassword.text.toString()
+        val password = binding.activityFormRegisterPassword.text.toString().toHash()
         return User(user ,name, password)
     }
 }
