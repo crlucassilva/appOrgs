@@ -17,18 +17,19 @@
 
         <activity
             android:name=".ui.activity.LoginActivity"
-            android:exported="true"
-            android:theme="@style/Theme.Orgs.NoActionBar">
-            <intent-filter>
+            android:theme="@style/Theme.Orgs.NoActionBar" />
+        <activity android:name=".ui.activity.FormRegisterActivity" />
+        <activity android:name=".ui.activity.ProductDetailsActivity" />
+        <activity android:name=".ui.activity.FormProductActivity" />
+        <activity
+            android:name=".ui.activity.ProductsListActivity"
+            android:exported="true">
+        <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activity.FormRegisterActivity" />
-        <activity android:name=".ui.activity.ProductDetailsActivity" />
-        <activity android:name=".ui.activity.FormProductActivity" />
-        <activity android:name=".ui.activity.ProductsListActivity" />
 
         <meta-data
             android:name="preloaded_fonts"

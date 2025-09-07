@@ -7,10 +7,12 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.datastore.preferences.core.edit
 import androidx.lifecycle.lifecycleScope
 import br.com.alura.orgs.R
 import br.com.alura.orgs.database.AppDatabase
 import br.com.alura.orgs.databinding.ActivityProductsListBinding
+import br.com.alura.orgs.extensions.goTo
 import br.com.alura.orgs.model.Product
 import br.com.alura.orgs.preferences.dataStore
 import br.com.alura.orgs.preferences.loggedUserPreferences
@@ -71,9 +73,16 @@ class ProductsListActivity : AppCompatActivity() {
 
                 else -> null
             }
-
             orderedProducts?.let {
                 adapter.update(it)
+            }
+
+            when(item.itemId) {
+                R.id.menu_list_products_exit -> {
+                    dataStore.edit { preferences ->
+                        preferences.remove(loggedUserPreferences)
+                    }
+                }
             }
         }
         return super.onOptionsItemSelected(item)
@@ -135,13 +144,22 @@ class ProductsListActivity : AppCompatActivity() {
                 }
             }
 
-            dataStore.data.collect { preferences ->
-                preferences[loggedUserPreferences]?.let { userId ->
-                    userDao.findId(userId).collect {
-                        Log.i("ListaProdutos", "onCreate: $it")
-                    }
+            launch {
+                dataStore.data.collect { preferences ->
+                    preferences[loggedUserPreferences]?.let { userId ->
+                        launch {
+                            userDao.findId(userId).collect {
+                                Log.i("ListaProdutos", "onCreate: $it")
+                            }
+                        }
+                    } ?: goToLogin()
                 }
             }
         }
+    }
+
+    private fun goToLogin() {
+        goTo(LoginActivity::class.java)
+        finish()
     }
 }

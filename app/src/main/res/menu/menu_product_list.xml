@@ -28,4 +28,9 @@
                 android:title="valor asc"/>
         </menu>
     </item>
+    <item
+        android:id="@+id/menu_list_products_exit"
+        android:icon="@drawable/ic_action_exit"
+        android:title="Sair do App"
+        app:showAsAction="ifRoom" />
 </menu>
