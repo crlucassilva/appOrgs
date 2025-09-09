@@ -2,24 +2,20 @@ package br.com.alura.orgs.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
-import androidx.datastore.preferences.core.edit
 import androidx.lifecycle.lifecycleScope
 import br.com.alura.orgs.R
 import br.com.alura.orgs.database.AppDatabase
 import br.com.alura.orgs.databinding.ActivityProductsListBinding
-import br.com.alura.orgs.extensions.goTo
 import br.com.alura.orgs.model.Product
-import br.com.alura.orgs.preferences.dataStore
-import br.com.alura.orgs.preferences.loggedUserPreferences
 import br.com.alura.orgs.ui.recycleview.adapter.ProductListAdapter
-import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 
-class ProductsListActivity : AppCompatActivity() {
+class ProductsListActivity : UserBaseActivity() {
 
     private val adapter = ProductListAdapter(context = this)
     private val binding by lazy {
@@ -27,10 +23,6 @@ class ProductsListActivity : AppCompatActivity() {
     }
     private val productDao by lazy {
         AppDatabase.getInstance(this).productDao()
-    }
-
-    private val userDao by lazy {
-        AppDatabase.getInstance(this).userDao()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -133,11 +125,6 @@ class ProductsListActivity : AppCompatActivity() {
         }
     }
 
-    private suspend fun logoutUser() {
-        dataStore.edit { it.remove(loggedUserPreferences) }
-        finish()
-    }
-
     private fun goToFormProduct() {
         val intent = Intent(this, FormProductActivity::class.java)
         startActivity(intent)
@@ -146,25 +133,12 @@ class ProductsListActivity : AppCompatActivity() {
     private fun updateList() {
         lifecycleScope.launch {
             launch {
-                checkLoggedUser()
-            }
-        }
-    }
-
-    private suspend fun checkLoggedUser() {
-        dataStore.data.collect { preferences ->
-            preferences[loggedUserPreferences]?.let { userId ->
-                findUser(userId)
-            } ?: goToLogin()
-        }
-    }
-
-    private fun findUser(userId: String) {
-        lifecycleScope.launch {
-            userDao.findId(userId).firstOrNull()?.let {
-                launch {
-                    findProductsUser()
-                }
+                user
+                    .filterNotNull()
+                    .collect {
+                        Log.i("ListaProdutos", "onCreate: $it")
+                        findProductsUser()
+                    }
             }
         }
     }
@@ -173,10 +147,5 @@ class ProductsListActivity : AppCompatActivity() {
         productDao.findAll().collect { products ->
             adapter.update(products)
         }
-    }
-
-    private fun goToLogin() {
-        goTo(LoginActivity::class.java)
-        finish()
     }
 }
