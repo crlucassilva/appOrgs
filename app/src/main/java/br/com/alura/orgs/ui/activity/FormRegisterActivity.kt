@@ -2,12 +2,12 @@ package br.com.alura.orgs.ui.activity
 
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import br.com.alura.orgs.database.AppDatabase
 import br.com.alura.orgs.databinding.ActivityFormRegisterBinding
 import br.com.alura.orgs.extensions.toHash
+import br.com.alura.orgs.extensions.toast
 import br.com.alura.orgs.model.User
 import kotlinx.coroutines.launch
 
@@ -32,16 +32,18 @@ class FormRegisterActivity : AppCompatActivity() {
 
         saveButton.setOnClickListener {
             val newUser = createUser()
-            Log.i("CadastrarUsuario", "onCreate: $newUser")
-            lifecycleScope.launch {
-                try {
-                    dao.save(newUser)
-                    finish()
-                } catch (e: Exception) {
-                    Log.e("CadastroUsuario", "configureButtonRegister", e)
-                    Toast.makeText(this@FormRegisterActivity, "Falha ao cadastrar usuário", Toast.LENGTH_SHORT
-                    ).show()
-                }
+            register(newUser)
+        }
+    }
+
+    private fun register(user: User) {
+        lifecycleScope.launch {
+            try {
+                dao.save(user)
+                finish()
+            } catch (e: Exception) {
+                Log.e("CadastroUsuario", "configureButtonRegister", e)
+                toast("Falha ao cadastrar usuário")
             }
         }
     }

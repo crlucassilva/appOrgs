@@ -2,7 +2,6 @@ package br.com.alura.orgs.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
@@ -17,6 +16,7 @@ import br.com.alura.orgs.model.Product
 import br.com.alura.orgs.preferences.dataStore
 import br.com.alura.orgs.preferences.loggedUserPreferences
 import br.com.alura.orgs.ui.recycleview.adapter.ProductListAdapter
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 
 class ProductsListActivity : AppCompatActivity() {
@@ -78,28 +78,16 @@ class ProductsListActivity : AppCompatActivity() {
                     .setMessage("Você tem certeza que deseja sair?")
                     .setPositiveButton("Sim") { dialog, which ->
                         lifecycleScope.launch {
-                            dataStore.edit { it.remove(loggedUserPreferences) }
-                            finish()
+                            logoutUser()
                         }
                     }
                     .setNegativeButton("Não", null)
                     .show()
                 true
             }
+
             else -> super.onOptionsItemSelected(item)
         }
-    }
-
-    private fun configFab() {
-        val fab = binding.activityProductListFloatingActionButton
-        fab.setOnClickListener {
-            goToFormProduct()
-        }
-    }
-
-    private fun goToFormProduct() {
-        val intent = Intent(this, FormProductActivity::class.java)
-        startActivity(intent)
     }
 
     private fun configRecycleView() {
@@ -138,25 +126,52 @@ class ProductsListActivity : AppCompatActivity() {
         }
     }
 
+    private fun configFab() {
+        val fab = binding.activityProductListFloatingActionButton
+        fab.setOnClickListener {
+            goToFormProduct()
+        }
+    }
+
+    private suspend fun logoutUser() {
+        dataStore.edit { it.remove(loggedUserPreferences) }
+        finish()
+    }
+
+    private fun goToFormProduct() {
+        val intent = Intent(this, FormProductActivity::class.java)
+        startActivity(intent)
+    }
+
     private fun updateList() {
         lifecycleScope.launch {
             launch {
-                productDao.findAll().collect { products ->
-                    adapter.update(products)
-                }
+                checkLoggedUser()
             }
+        }
+    }
 
-            launch {
-                dataStore.data.collect { preferences ->
-                    preferences[loggedUserPreferences]?.let { userId ->
-                        launch {
-                            userDao.findId(userId).collect {
-                                Log.i("ListaProdutos", "onCreate: $it")
-                            }
-                        }
-                    } ?: goToLogin()
+    private suspend fun checkLoggedUser() {
+        dataStore.data.collect { preferences ->
+            preferences[loggedUserPreferences]?.let { userId ->
+                findUser(userId)
+            } ?: goToLogin()
+        }
+    }
+
+    private fun findUser(userId: String) {
+        lifecycleScope.launch {
+            userDao.findId(userId).firstOrNull()?.let {
+                launch {
+                    findProductsUser()
                 }
             }
+        }
+    }
+
+    private suspend fun findProductsUser() {
+        productDao.findAll().collect { products ->
+            adapter.update(products)
         }
     }
 
