@@ -2,6 +2,7 @@ package br.com.alura.orgs.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.datastore.preferences.core.edit
 import androidx.lifecycle.lifecycleScope
@@ -20,6 +21,7 @@ abstract class UserBaseActivity : AppCompatActivity() {
     private val userDao by lazy {
         AppDatabase.getInstance(this).userDao()
     }
+
     private var _user: MutableStateFlow<User?> = MutableStateFlow(null)
     protected var user: StateFlow<User?> = _user
 
@@ -42,6 +44,18 @@ abstract class UserBaseActivity : AppCompatActivity() {
         _user.value = userDao
             .findId(userId)
             .firstOrNull()
+    }
+
+    protected fun showLogoutConfirmation() {
+        AlertDialog.Builder(this)
+            .setMessage("Você tem certeza que deseja sair?")
+            .setPositiveButton("Sim") { dialog, which ->
+                lifecycleScope.launch {
+                    logoutUser()
+                }
+            }
+            .setNegativeButton("Não", null)
+            .show()
     }
 
     protected suspend fun logoutUser() {

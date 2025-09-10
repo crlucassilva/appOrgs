@@ -66,15 +66,7 @@ class ProductsListActivity : UserBaseActivity() {
             }
 
             R.id.menu_list_products_exit -> {
-                AlertDialog.Builder(this)
-                    .setMessage("Você tem certeza que deseja sair?")
-                    .setPositiveButton("Sim") { dialog, which ->
-                        lifecycleScope.launch {
-                            logoutUser()
-                        }
-                    }
-                    .setNegativeButton("Não", null)
-                    .show()
+                showLogoutConfirmation()
                 true
             }
 
