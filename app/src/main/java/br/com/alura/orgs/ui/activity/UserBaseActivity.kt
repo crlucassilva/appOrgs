@@ -58,7 +58,7 @@ abstract class UserBaseActivity : AppCompatActivity() {
             .show()
     }
 
-    protected suspend fun logoutUser() {
+    private suspend fun logoutUser() {
         dataStore.edit { it.remove(loggedUserPreferences) }
         finish()
     }

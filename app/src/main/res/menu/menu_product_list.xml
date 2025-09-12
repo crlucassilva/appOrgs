@@ -29,8 +29,8 @@
         </menu>
     </item>
     <item
-        android:id="@+id/menu_list_products_exit"
-        android:icon="@drawable/ic_action_exit"
-        android:title="Sair do App"
+        android:id="@+id/menu_product_list_user"
+        android:icon="@drawable/ic_action_account"
+        android:title="Perfil de usuário"
         app:showAsAction="ifRoom" />
 </menu>

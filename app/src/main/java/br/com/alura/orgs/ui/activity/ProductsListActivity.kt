@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import br.com.alura.orgs.R
 import br.com.alura.orgs.database.AppDatabase
 import br.com.alura.orgs.databinding.ActivityProductsListBinding
+import br.com.alura.orgs.extensions.goTo
 import br.com.alura.orgs.model.Product
 import br.com.alura.orgs.ui.recycleview.adapter.ProductListAdapter
 import kotlinx.coroutines.flow.filterNotNull
@@ -65,8 +66,8 @@ class ProductsListActivity : UserBaseActivity() {
                 true
             }
 
-            R.id.menu_list_products_exit -> {
-                showLogoutConfirmation()
+            R.id.menu_product_list_user -> {
+                goTo(UserDetailsActivity::class.java)
                 true
             }
 

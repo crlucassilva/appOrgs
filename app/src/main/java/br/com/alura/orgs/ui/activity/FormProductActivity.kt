@@ -44,7 +44,6 @@ class FormProductActivity : UserBaseActivity() {
                     Log.i("FormulárioProduto", "onCreate: $it")
                 }
         }
-
     }
 
     private fun tryLoadProduct() {
