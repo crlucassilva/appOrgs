@@ -23,27 +23,24 @@ interface ProductDao {
     @Delete
     suspend fun remove(product: Product)
 
-//    @Update
-//    fun update(product: Product)
-
     @Query("SELECt * FROM Product WHERE id = :id")
     fun findById(id: Long): Flow<Product?>
 
-    @Query("SELECT * FROM Product ORDER BY name DESC")
-    suspend fun findAllOrderNameDesc(): List<Product>
+    @Query("SELECT * FROM Product WHERE userId = :userId ORDER BY name DESC")
+    suspend fun findAllOrderNameDesc(userId: String): List<Product>
 
-    @Query("SELECT * FROM Product ORDER BY name ASC")
-    suspend fun findAllOrderNameAsc(): List<Product>
+    @Query("SELECT * FROM Product WHERE userId = :userId ORDER BY name ASC")
+    suspend fun findAllOrderNameAsc(userId: String): List<Product>
 
-    @Query("SELECT * FROM Product ORDER BY description DESC")
-    suspend fun findAllOrderDescriptionDesc(): List<Product>
+    @Query("SELECT * FROM Product WHERE userId = :userId ORDER BY description DESC")
+    suspend fun findAllOrderDescriptionDesc(userId: String): List<Product>
 
-    @Query("SELECT * FROM Product ORDER BY description ASC")
-    suspend fun findAllOrderDescriptionAsc(): List<Product>
+    @Query("SELECT * FROM Product WHERE userId = :userId ORDER BY description ASC")
+    suspend fun findAllOrderDescriptionAsc(userId: String): List<Product>
 
-    @Query("SELECT * FROM Product ORDER BY value DESC")
-    suspend fun findAllOrderValueDesc(): List<Product>
+    @Query("SELECT * FROM Product WHERE userId = :userId ORDER BY value DESC")
+    suspend fun findAllOrderValueDesc(userId: String): List<Product>
 
-    @Query("SELECT * FROM Product ORDER BY value ASC")
-    suspend fun findAllOrderValueAsc(): List<Product>
+    @Query("SELECT * FROM Product WHERE userId = :userId ORDER BY value ASC")
+    suspend fun findAllOrderValueAsc(userId: String): List<Product>
 }

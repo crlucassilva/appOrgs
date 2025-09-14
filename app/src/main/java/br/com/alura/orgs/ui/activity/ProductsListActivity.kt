@@ -51,13 +51,14 @@ class ProductsListActivity : UserBaseActivity() {
             R.id.menu_product_list_value_desc,
             R.id.menu_product_list_value_asc -> {
                 lifecycleScope.launch {
+                    val userId = user.value?.id ?: return@launch
                     val orderedProducts: List<Product>? = when (item.itemId) {
-                        R.id.menu_product_list_name_desc -> productDao.findAllOrderNameDesc()
-                        R.id.menu_product_list_name_asc -> productDao.findAllOrderNameAsc()
-                        R.id.menu_product_list_description_desc -> productDao.findAllOrderDescriptionDesc()
-                        R.id.menu_product_list_description_asc -> productDao.findAllOrderDescriptionAsc()
-                        R.id.menu_product_list_value_desc -> productDao.findAllOrderValueDesc()
-                        R.id.menu_product_list_value_asc -> productDao.findAllOrderValueAsc()
+                        R.id.menu_product_list_name_desc -> productDao.findAllOrderNameDesc(userId)
+                        R.id.menu_product_list_name_asc -> productDao.findAllOrderNameAsc(userId)
+                        R.id.menu_product_list_description_desc -> productDao.findAllOrderDescriptionDesc(userId)
+                        R.id.menu_product_list_description_asc -> productDao.findAllOrderDescriptionAsc(userId)
+                        R.id.menu_product_list_value_desc -> productDao.findAllOrderValueDesc(userId)
+                        R.id.menu_product_list_value_asc -> productDao.findAllOrderValueAsc(userId)
                         else -> null
                     }
                     orderedProducts?.let { adapter.update(it) }

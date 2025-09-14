@@ -10,22 +10,22 @@
         <menu>
             <item
                 android:id="@+id/menu_product_list_name_desc"
-                android:title="nome desc"/>
+                android:title="Nome Decrescente"/>
             <item
                 android:id="@+id/menu_product_list_name_asc"
-                android:title="nome asc"/>
+                android:title="Nome Crescente"/>
             <item
                 android:id="@+id/menu_product_list_description_desc"
-                android:title="descrição desc"/>
+                android:title="Descrição Decrescente"/>
             <item
                 android:id="@+id/menu_product_list_description_asc"
-                android:title="descrição asc"/>
+                android:title="Descrição Crescente"/>
             <item
                 android:id="@+id/menu_product_list_value_desc"
-                android:title="valor desc"/>
+                android:title="Valor Decrescente"/>
             <item
                 android:id="@+id/menu_product_list_value_asc"
-                android:title="valor asc"/>
+                android:title="Valor Crescente"/>
         </menu>
     </item>
     <item
