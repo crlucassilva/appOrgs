@@ -10,6 +10,7 @@ import br.com.alura.orgs.extensions.loadImage
 import br.com.alura.orgs.model.Product
 import br.com.alura.orgs.ui.dialog.DialogImageForm
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 
@@ -17,10 +18,6 @@ class FormProductActivity : UserBaseActivity() {
 
     private val binding by lazy {
         ActivityFormProductBinding.inflate(layoutInflater)
-    }
-
-    private val userDao by lazy {
-        AppDatabase.getInstance(this).userDao()
     }
 
     private var url: String? = null
@@ -37,13 +34,6 @@ class FormProductActivity : UserBaseActivity() {
         configDialog()
         tryLoadProduct()
         findProduct()
-        lifecycleScope.launch {
-            user
-                .filterNotNull()
-                .collect {
-                    Log.i("FormulárioProduto", "onCreate: $it")
-                }
-        }
     }
 
     private fun tryLoadProduct() {
@@ -81,15 +71,17 @@ class FormProductActivity : UserBaseActivity() {
     private fun configSaveButton() {
         val saveButton = binding.activityFormProductSaveButton
         saveButton.setOnClickListener {
-            val newProduct = createProduct()
             lifecycleScope.launch {
-                productDao.save(newProduct)
-                finish()
+                user.value?.let { user ->
+                    val newProduct = createProduct(user.id)
+                    productDao.save(newProduct)
+                    finish()
+                }
             }
         }
     }
 
-    private fun createProduct(): Product {
+    private fun createProduct(userId: String): Product {
         val fieldName = binding.activityFormProductName
         val name = fieldName.text.toString()
         val fieldDescription = binding.activityFormProductDescription
@@ -107,7 +99,8 @@ class FormProductActivity : UserBaseActivity() {
             name = name,
             description = description,
             value = value,
-            image = url
+            image = url,
+            userId = userId
         )
     }
 }

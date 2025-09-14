@@ -2,7 +2,6 @@ package br.com.alura.orgs.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
@@ -128,16 +127,15 @@ class ProductsListActivity : UserBaseActivity() {
             launch {
                 user
                     .filterNotNull()
-                    .collect {
-                        Log.i("ListaProdutos", "onCreate: $it")
-                        findProductsUser()
+                    .collect { user ->
+                        findProductsUser(user.id)
                     }
             }
         }
     }
 
-    private suspend fun findProductsUser() {
-        productDao.findAll().collect { products ->
+    private suspend fun findProductsUser(userId: String) {
+        productDao.findAllUser(userId).collect { products ->
             adapter.update(products)
         }
     }

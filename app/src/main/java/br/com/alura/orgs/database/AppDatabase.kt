@@ -11,7 +11,7 @@ import br.com.alura.orgs.database.dao.UserDao
 import br.com.alura.orgs.model.Product
 import br.com.alura.orgs.model.User
 
-@Database(entities = [Product::class, User::class], version = 2, exportSchema = true)
+@Database(entities = [Product::class, User::class], version = 3, exportSchema = true)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
 
@@ -19,13 +19,17 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
 
     companion object {
-        @Volatile private var db: AppDatabase? = null
-        fun getInstance(context: Context) : AppDatabase {
+        @Volatile
+        private var db: AppDatabase? = null
+        fun getInstance(context: Context): AppDatabase {
             return db ?: Room.databaseBuilder(
                 context,
                 AppDatabase::class.java,
                 "orgs.db"
-            ).addMigrations(MIGRATION_1_2).build()
+            ).addMigrations(
+                MIGRATION_1_2,
+                MIGRATION_2_3
+            ).build()
                 .also {
                     db = it
                 }
