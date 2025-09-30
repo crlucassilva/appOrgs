@@ -1,5 +1,5 @@
 # appOrgs
-[![NPM](https://img.shields.io/npm/l/react)]([https://github.com/crlucassilva/appOrgs/blob/main/LICENSE)
+[![NPM](https://img.shields.io/npm/l/react)](https://github.com/crlucassilva/appOrgs/blob/main/LICENSE)
 > Status: Finalizado!
 
 ## Sobre o Projeto
